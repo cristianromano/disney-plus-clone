@@ -1,38 +1,61 @@
-import React from 'react'
+import React, {useEffect,useState} from 'react'
 import styled from 'styled-components'
+import {useParams} from 'react-router-dom'
+import db from '../firebase'
 
 function Detail() {
+    const {id} = useParams();
+    const [movie, setMovie] = useState();
+
+    useEffect(() =>{
+        db.collection("movies")
+        .doc(id)
+        .get()
+        .then((doc)=>{
+            if(doc.exists){
+                // save the movie data
+                setMovie(doc.data());
+            } else {
+                //redirect to home page
+            }
+        })
+    }, [])
+
     return (
         <Container>
-           <BackGround>
-               <img src='https://img.ecartelera.com/noticias/47600/47656-m.jpg' alt='bao-merengue'></img>
-           </BackGround>
-           <Title>
-               <img src='/images/logo-bao.png' alt='logo-bao'/>
-           </Title>
-           <Controls>
-            <PlayButton>
-                <img src='/images/play-icon-black.png' alt='play-icon'/>
-                <span>PLAY</span>
-            </PlayButton>
-            <TrailerButton>
-            <img src='/images/play-icon-white.png' alt='play-icon-white'/>
-            <span>Trailer</span>
-            </TrailerButton>
-            <AddButton>
-                <span>+</span>
-            </AddButton>
-            <GroupWatchButton>
-                <img src='/images/group-icon.png' alt='group-icon'/>
-            </GroupWatchButton>
-           </Controls>
-           <SubTitle>
-                2018 · 7m · Family , Fantasy , Kids
-           </SubTitle>
-           <Description>
-                ZYZZZ BRAAAAAHHH
-           </Description>
-        </Container>
+            {movie && (
+                    <>
+                    <BackGround>
+                    <img src={movie.backgroundImg}/>
+                </BackGround>
+                <Title>
+                    <img src={movie.titleImg}/>
+                </Title>
+                <Controls>
+                    <PlayButton>
+                        <img src="/images/play-icon-black.png"/>
+                        <span>PLAY</span>
+                    </PlayButton>
+                    <TrailerButton>
+                        <img src="/images/play-icon-white.png"/>
+                        <span>Trailer</span>
+                    </TrailerButton>
+                    <AddButton>
+                        <span>+</span>
+                    </AddButton>
+                    <GroupWatchButton>
+                        <img src="/images/group-icon.png"/>
+                    </GroupWatchButton>
+                </Controls>
+                <SubTitle>
+                    {movie.subTitle}   
+                </SubTitle>
+                <Description>
+                    {movie.description}
+                </Description>
+                </>
+            )}
+        </Container> 
     )
 }
 
@@ -50,7 +73,7 @@ const BackGround = styled.div`
   position: fixed;
     top: 0;
     left: 0;
-    bottom: -1;
+    bottom: 0;
     right: 0;
     z-index: -1;
     opacity: 0.8;
@@ -147,5 +170,4 @@ const Description = styled.div`
     margin-top: 16px;
     color: rgba(249,249,249);
     max-width: 760px;
-
 `
