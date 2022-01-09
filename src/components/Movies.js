@@ -1,35 +1,23 @@
 import React from "react";
 import styled from "styled-components";
+import {selectMovies} from "../features/movie/movieSlice";
+import {useSelector} from "react-redux";
+
 
 function Movies() {
+
+  const movies = useSelector(selectMovies);
   return (
     <Container>
       <h4>Recommended for you</h4>
       <Content>
-        <Wrap>
-          <img src="/images/bitcoin.png" />
-        </Wrap>
-        <Wrap>
-          <img src="/images/bitcoin.png" />
-        </Wrap>
-        <Wrap>
-          <img src="/images/bitcoin.png" />
-        </Wrap>
-        <Wrap>
-          <img src="/images/bitcoin.png" />
-        </Wrap>
-        <Wrap>
-          <img src="/images/bitcoin.png" />
-        </Wrap>
-        <Wrap>
-          <img src="/images/bitcoin.png" />
-        </Wrap>
-        <Wrap>
-          <img src="/images/bitcoin.png" />
-        </Wrap>
-        <Wrap>
-          <img src="/images/bitcoin.png" />
-        </Wrap>
+      {movies &&  
+        movies.map((movie)=>(
+          <Wrap key = {movie.id}>
+          <img src={movie.cardImg} alt="movie-pics"/>
+          </Wrap>
+        ))           
+      }
       </Content>
     </Container>
   );
