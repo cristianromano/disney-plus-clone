@@ -27,7 +27,7 @@ function Header() {
   }, [])
 
     const signIn = ()=>{
-        auth.signInWithPopup(provider)
+        auth.signInWithRedirect(provider)
         .then((result)=>{
             let user = result.user
             dispatch(setUserLogin({
